@@ -131,3 +131,14 @@ qnorm(0.95, mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), sd(datw$TAVE[datw$si
 #question 6: 4 degree increase in mean, what is probability above current high extreme
 1 - pnorm(qnorm(0.95, mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), sd(datw$TAVE[datw$siteN == 1], na.rm = TRUE)), mean(datw$TAVE[datw$siteN == 1] + 4, na.rm = TRUE), sd(datw$TAVE[datw$siteN == 1], na.rm = TRUE))
 
+#Evaluating Precipitation Data
+#Question 7 daily precip for Aberdeen histogram
+aberdeen_precip_hist<-hist(datw$PRCP[datw$siteN == 1], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Daily Precipitation (cm)",ylab = "Relative Frequency", col = "black",border = "white")
+#Question 8 yearly precipitation
+annualprecip<- aggregate(datw$PRCP, by=list(datw$NAME,datw$year), FUN="sum", na.rm = TRUE)
+aberdeen_annual_precip_hist<-hist(annualprecip$x[annualprecip$Group.1 == "ABERDEEN, WA US"], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
+livermore_annual_precip_hist<-hist(annualprecip$x[annualprecip$Group.1 == "LIVERMORE, CA US"], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
+morrisville_annual_precip_hist<-hist(annualprecip$x[annualprecip$Group.1 == "MORRISVILLE 6 SW, NY US"], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
+mormonflat_annual_precip_hist<-hist(annualprecip$x[annualprecip$Group.1 == "MORMON FLAT, AZ US"], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
+#mean annual precip
+meanannualprecip<- aggregate(annualprecip$x, by=list(annualprecip$Group.1), FUN="mean", na.rm = TRUE)
