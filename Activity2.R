@@ -57,22 +57,22 @@ abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)+sd(datw$TAVE[datw$siteN 
 #group 4 charts together
 par(mfrow=c(2,2))
 #copy site 1
-hist(datw$TAVE[datw$siteN==1],freq=FALSE, main= paste(levels(datw$NAME)[1]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
+hist(datw$TAVE[datw$siteN==1],freq=FALSE, main= paste(levels(datw$NAME)[1]), xlab = "Average Daily Temperature\n (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white", cex.main=0.8, cex.lab=0.8)
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 1], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 1], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 2
-hist(datw$TAVE[datw$siteN==2],freq=FALSE, main = paste(levels(datw$NAME)[2]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "blue",border = "white")
+hist(datw$TAVE[datw$siteN==2],freq=FALSE, main = paste(levels(datw$NAME)[2]), xlab = "Average Daily Temperature\n (degrees C)",ylab = "Relative Frequency", col = "blue",border = "white", cex.main=0.8, cex.lab=0.8)
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 2], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 2], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 3
-hist(datw$TAVE[datw$siteN==3],freq=FALSE, main= paste(levels(datw$NAME)[3]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "green",border = "white")
+hist(datw$TAVE[datw$siteN==3],freq=FALSE, main= paste(levels(datw$NAME)[3]), xlab = "Average Daily Temperature\n (degrees C)",ylab = "Relative Frequency", col = "green",border = "white", cex.main=0.8, cex.lab=0.8)
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 3], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 3], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 4
-hist(datw$TAVE[datw$siteN==4],freq=FALSE, main= paste(levels(datw$NAME)[4]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "black",border = "white")
+hist(datw$TAVE[datw$siteN==4],freq=FALSE, main= paste(levels(datw$NAME)[4]), xlab = "Average Daily Temperature\n (degrees C)",ylab = "Relative Frequency", col = "black",border = "white", cex.main=0.8, cex.lab=0.8)
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 4], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 4], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
@@ -126,11 +126,6 @@ annualprecip<- aggregate(datw$PRCP, by=list(datw$NAME,datw$year), FUN="sum", na.
 colnames(annualprecip)<-c("NAME","year","Annual_Precipitation")
 #create histogram for annual precipitation for Aberdeen
 aberdeen_annual_precip_hist<-hist(annualprecip$Annual_Precipitation[annualprecip$NAME == "ABERDEEN, WA US"], freq=FALSE, main = "ABERDEEN, WA US", xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
-#create histograms for other sites to observe normality
-livermore_annual_precip_hist<-hist(annualprecip$Annual_Precipitation[annualprecip$NAME == "LIVERMORE, CA US"], freq=FALSE, main = "LIVERMORE, CA US", xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
-morrisville_annual_precip_hist<-hist(annualprecip$Annual_Precipitation[annualprecip$NAME == "MORRISVILLE 6 SW, NY US"], freq=FALSE, main = "MORRISVILLE 6 SW, NY US", xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
-mormonflat_annual_precip_hist<-hist(annualprecip$Annual_Precipitation[annualprecip$NAME == "MORMON FLAT, AZ US"], freq=FALSE, main = "MORMON FLAT, AZ US", xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
-mandan_annual_precip_hist<-hist(annualprecip$Annual_Precipitation[annualprecip$NAME == "MANDAN EXPERIMENT STATION, ND US"], freq=FALSE, main = "MANDAN EXPERIMENT STATION, ND US", xlab = "Annual Precipitation (cm)",ylab = "Relative Frequency", col = "grey50",border = "white")
 
 #Question 9- get mean annual precip for each site
 meanannualprecip<- aggregate(annualprecip$Annual_Precipitation, by=list(annualprecip$NAME), FUN="mean", na.rm = TRUE)
