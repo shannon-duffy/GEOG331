@@ -1,6 +1,6 @@
 #Activity 2
 #read in noaa data
-datw<- read.csv("data/noaa_weather/2011124.csv")
+datw<- read.csv("data/noaa_weather/2011124.csv", stringsAsFactors = TRUE)
 #get info about data frame
 str(datw)
 #Question 1- there are 157,849 rows and 9 columns
@@ -37,7 +37,7 @@ colnames(averagetemp)<-c("NAME","MAAT")
 #numbering location names
 datw$siteN<- as.numeric(as.factor(datw$NAME))
 #make a histogram for Aberdeen
-hist(datw$TAVE[datw$siteN==1],freq=FALSE,main= "ABERDEEN, WA US",xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
+hist(datw$TAVE[datw$siteN==1],freq=FALSE,main= paste(levels(datw$NAME)[1]),xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
 
 #Question 3- look up and describe functions
 #looking up functions
@@ -46,7 +46,7 @@ help("paste")
 help("levels")
 
 #add mean line to histogram
-hist(datw$TAVE[datw$siteN==1],freq=FALSE, main = "ABERDEEN, WA US", xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
+hist(datw$TAVE[datw$siteN==1],freq=FALSE, main= paste(levels(datw$NAME)[1]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), col = "tomato3", lwd = 3)
 #add standard deviation below mean
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 1], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
@@ -57,22 +57,22 @@ abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)+sd(datw$TAVE[datw$siteN 
 #group 4 charts together
 par(mfrow=c(2,2))
 #copy site 1
-hist(datw$TAVE[datw$siteN==1],freq=FALSE, main = "ABERDEEN, WA US", xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
+hist(datw$TAVE[datw$siteN==1],freq=FALSE, main= paste(levels(datw$NAME)[1]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "grey50",border = "white")
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 1], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 1], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 2
-hist(datw$TAVE[datw$siteN==2],freq=FALSE, main = "LIVERMORE, CA US", xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "blue",border = "white")
+hist(datw$TAVE[datw$siteN==2],freq=FALSE, main = paste(levels(datw$NAME)[2]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "blue",border = "white")
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 2], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 2], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 2], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 3
-hist(datw$TAVE[datw$siteN==3],freq=FALSE, main = "MANDAN EXPERIMENT STATION, ND US", xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "green",border = "white")
+hist(datw$TAVE[datw$siteN==3],freq=FALSE, main= paste(levels(datw$NAME)[3]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "green",border = "white")
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 3], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 3], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 3], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 #site 4
-hist(datw$TAVE[datw$siteN==4],freq=FALSE, main = "MORMON FLAT, AZ US", xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "black",border = "white")
+hist(datw$TAVE[datw$siteN==4],freq=FALSE, main= paste(levels(datw$NAME)[4]), xlab = "Average Daily Temperature (degrees C)",ylab = "Relative Frequency", col = "black",border = "white")
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE), col = "tomato3", lwd = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE)-sd(datw$TAVE[datw$siteN == 4], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
 abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE)+sd(datw$TAVE[datw$siteN == 4], na.rm= TRUE), col = "tomato3", lwd = 3, lty = 3)
@@ -82,7 +82,7 @@ abline(v=mean(datw$TAVE[datw$siteN == 4], na.rm = TRUE)+sd(datw$TAVE[datw$siteN 
 par(mfrow=c(1,1))
 h1 <- hist(datw$TAVE[datw$siteN == 1],
            freq=FALSE, 
-           main = "ABERDEEN, WA US",
+           main= paste(levels(datw$NAME)[1]),
            xlab = "Average daily temperature (degrees C)", 
            ylab="Relative frequency",
            col="grey50",
@@ -117,7 +117,7 @@ qnorm(0.95, mean(datw$TAVE[datw$siteN == 1], na.rm = TRUE), sd(datw$TAVE[datw$si
 
 #Evaluating Precipitation Data
 #Question 7- daily precip for Aberdeen histogram
-aberdeen_precip_hist<-hist(datw$PRCP[datw$siteN == 1], freq=FALSE, main = paste(levels(datw$NAME[4])), xlab = "Daily Precipitation (cm)",ylab = "Relative Frequency", col = "black",border = "white")
+aberdeen_precip_hist<-hist(datw$PRCP[datw$siteN == 1], freq=FALSE, main= paste(levels(datw$NAME)[1]), xlab = "Daily Precipitation (cm)",ylab = "Relative Frequency", col = "black",border = "white", xlim = c(0,60))
 
 #Question 8- annual precipitation for each year and site
 #create new dataframe
