@@ -96,14 +96,21 @@ datW[datW$soil.temp > 24,]
 datW[datW$soil.temp < 10,]
 
 #making a table of averages
+#mack object for each average rounded to the appropriate decimal
+#temp ends in 0 so use sprintf function to keep it
 avetemp<-sprintf("%.1f",round(mean(datW$air.tempQ2, na.rm = TRUE), digits = 1))
 avewind<-round(mean(datW$wind.speedQ2, na.rm = TRUE), digits = 2)
 avesoiltemp<-round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)
 avesoilmoist<-round(mean(datW$soil.moisture, na.rm = TRUE), digits = 4)
 totalprecip<-round(sum(datW$precipitation), digits = 3)
+#aggregate values in data frame
 avetable<-data.frame(avetemp, avewind, avesoiltemp, avesoilmoist, totalprecip)
+#create headers
 headers<-c("Average Air Temperature", "Average Wind Speed", "Average Soil Temperature", "Average Soil Moisture", "Total Precipitation")
-nobs<- c(length(datW$air.tempQ2[!is.na(datW$air.tempQ2)]), length(datW$wind.speedQ2[!is.na(datW$wind.speedQ2)]), length(datW$soil.temp[!is.na(datW$soil.temp)]), length(datW$soil.moisture[!is.na(datW$soil.moisture)]), length(datW$precipitation[!is.na(datW$precipitation)]))
 colnames(avetable)<-headers
+#count the number of observations for each variable and compile in a vector
+nobs<- c(length(datW$air.tempQ2[!is.na(datW$air.tempQ2)]), length(datW$wind.speedQ2[!is.na(datW$wind.speedQ2)]), length(datW$soil.temp[!is.na(datW$soil.temp)]), length(datW$soil.moisture[!is.na(datW$soil.moisture)]), length(datW$precipitation[!is.na(datW$precipitation)]))
+#convert number of observations to text with "n = " and compile in a vector
 nobstext<-c("n = 2105", "n = 2105", "n = 1411", "n = 1141", "n = 2188")
+#add row of number of observations to table of averages in new dataframe
 avetablenobs<-rbind(avetable,nobstext)
