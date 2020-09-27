@@ -1,3 +1,5 @@
+#Shannon Duffy
+#9/27/2020
 #Activity 3
 
 #Question 3: what's the difference between skip and nrows?
@@ -70,7 +72,7 @@ datW[datW$soil.temp > 24,]
 datW[datW$soil.temp < 10,]
 
 #Question 8:making a table of averages
-#mack object for each average rounded to the appropriate decimal
+#make object for each average rounded to the appropriate decimal
 #temp ends in 0 so use sprintf function to keep it
 avetemp<-sprintf("%.1f", mean(datW$air.tempQ2, na.rm = TRUE))
 avewind<-round(mean(datW$wind.speedQ2, na.rm = TRUE), digits = 2)
@@ -90,7 +92,7 @@ nobstext<-c("n = 2105", "n = 2105", "n = 1411", "n = 1141", "n = 2188")
 avetablenobs<-rbind(avetable,nobstext)
 
 #Question 9: making plots of weather variables
-#group together
+#group plots together
 par(mfrow=c(2,2), mar=c(3,4,0.5,0), mgp=c(1.5,0.5,0))
 #air temp
 plot(datW$DD , datW$air.tempQ2, xlab = "Day of Year", ylab = "Air Temperature (°C)", type = "l")
