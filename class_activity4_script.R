@@ -11,16 +11,21 @@ library(ggplot2)
 #####################################
 
 #Using only data for iris versicolor
-View(iris)
 #write a for loop
 #that produces a regression table
 #for each of the following relationships
 #1. iris  sepal length x width
 #2. iris  petal length x width
 #3. iris sepal length x petal length
+
+#select just versicolor irises
 versicolor<-filter(iris, iris$Species == "versicolor")
+
+#create objects to put in for loop that select the correct variables
 x<-c(versicolor[1], versicolor[3], versicolor[1])
 y<-c(versicolor[2], versicolor[4], versicolor[3])
+
+#create list and fill it with the output of the for loop
 reg<- list()
 for (i in 1:3) {reg[[i]]<-lm(y[[i]]~x[[i]])}
 
@@ -33,7 +38,7 @@ for (i in 1:3) {reg[[i]]<-lm(y[[i]]~x[[i]])}
 height <- data.frame(Species = c("virginica","setosa","versicolor"),
 					Height.cm = c(60,100,11.8))
 
-left_join(iris,height)
+irisheight<-left_join(iris,height)
 
 #####################################
 ##### Part 3: plots in ggplot2  #####
@@ -60,4 +65,4 @@ ggplot(iris,aes(x=Sepal.Length, y=Sepal.Width)) +
 #####################################
 
 #the commands in ggplot create a blank plot for a data frame (iris) and then the variables are added using the aes() command
-#whereas in the plot function, you give the variables using the $ rather than giving the data frame and the variables seperately
+#whereas in the plot function, you give the variables using the $ rather than giving the data frame and the variables separately
