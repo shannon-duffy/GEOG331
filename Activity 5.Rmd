@@ -1,0 +1,62 @@
+---
+title: "Activity 5"
+author: "Shannon Duffy"
+date: "10/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1: Given the description and location of the stream, what factors would you expect to influence streamflow? Would there be times that you might expect higher flow than would be typical for a given amount of rain in the drainage basin?
+
+I would expect that flow would increase over time as popluation increased because this is in a populated area which indicates the paved area has increased and also with more people there is more flow from the sewer lines that feed into the river. It's also located in an area with great temperature variability and snowfall, so I expect spring months will have higher flow because of snow melt.
+
+read data
+```{r}
+library(lubridate)
+datH<-read.csv('stream_flow_data.csv', na.strings = c("Eqp"))
+datP <- read.csv("data5/2049867.csv")
+```
+select just reliable/publishable data
+```{r}
+datD <- datH[datH$discharge.flag == "A",]
+```
+convert dates
+```{r}
+#### define time for streamflow #####
+#convert date and time
+datesD <- as.Date(datD$date, "%m/%d/%Y")
+#get day of year
+datD$doy <- yday(datesD)
+#calculate year
+datD$year <- year(datesD)
+#define time
+timesD <- hm(datD$time)
+
+#### define time for precipitation #####    
+dateP <- ymd_hm(datP$DATE)
+#get day of year
+datP$doy <- yday(dateP)
+#get year 
+datP$year <- year(dateP)
+
+#### get decimal formats #####
+#convert time from a string to a more usable format
+#with a decimal hour
+datD$hour <- hour(timesD ) + (minute(timesD )/60)
+#get full decimal time
+datD$decDay <- datD$doy + (datD$hour/24)
+#calculate a decimal year, but account for leap year
+datD$decYear <- ifelse(leap_year(datD$year),datD$year + (datD$decDay/366), datD$year + (datD$decDay/365))
+#calculate times for datP                       
+datP$hour <- hour(dateP ) + (minute(dateP )/60)
+#get full decimal time
+datP$decDay <- datP$doy + (datP$hour/24)
+#calculate a decimal year, but account for leap year
+datP$decYear <- ifelse(leap_year(datP$year),datP$year + (datP$decDay/366), datP$year + (datP$decDay/365))      
+```
+
+Question 2: Explain how decimal year is calculated and how leap year is accounted for. What do the results of the leap_year function look like?
+First, dates must be recongizable as dates which can be achieved with the as.Date function. Decimal hour is calculated by converting minutes to decimal hours by selecting the minutes of the time object created with the hm function and dividing by 60 and adding to the hours of the time object created with hm. Then to convert that new object to decimal days, it is divided by 24 and added to the doy created with the yday function. Then the decimal year is created by taking that new object, dividing it by 365 (or 366 for leap years), and adding it to the year created with the year function. The leap_year function takes a value that is recognized as a year and returns TRUE if that year was a leap year or FALSE if it was not. The ifelse function selects those years deemed as leap years by the leap_year function and divides the decimal day by 366 and adds it to the year. For all other years, the decimal day is divided by 365 and added to the year.
