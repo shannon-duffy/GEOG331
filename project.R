@@ -7,21 +7,14 @@ ncar<-nc_open("coastal-stns-Vol-monthly.updated-Aug2014.nc")
   sink()
 }
 time<-ncvar_get(ncar, ncar$dim$time)
-time
-View(time)
 station<-ncvar_get(ncar, ncar$dim$station)
-station
 flow<-ncvar_get(ncar, ncar$var$FLOW)
-View(flow)
-dim(flow)
 #subset flow for Kinshasa 2000-2010
 flow.kinshasa<-flow[2,1201:1332]
 station_name<-ncvar_get(ncar, ncar$var$stn_name)
-station_name
 river_name<-ncvar_get(ncar, ncar$var$riv_name)
-View(river_name)
-View(flow.kinshasa)
 plot(flow.kinshasa, type="l")
+months<-as.Date(c(01-2000,02-2000,03-2000,04-2000,05-2000,06-2000,07-2000,08-2000,09-2000,10-2000,11-2000,12-2000,01-2001,02-2001,03-2001,04-2001,05-2001,06-2001,07-2001,08-2001,09-2001,10-2001,11-2001,12-2001,01-2002,02-2002,03-2002,04-2002,05-2002,06-2002,07-2002,08-2002,09-2002,10-2002,11-2002,12-2002,01-2003,02-2003,03-2002,04-2003,05-2003,06-2003,07-2003,08-2003,09-2003,10-2003,11-2003,12-2003,01-2004,02-2004,03-2004,04-2004,05-2004,06-2004,07-2004,08-2004,09-2004,10-2004,11-2004,12-2004,01-2005,02-2005,03-2005,04-2005,05-2005,06-2005,07-2005,08-2005,09-2005,10-2005,11-2005,12-2005,01-2006,02-2006,03-2006,04-2006,05-2006,06-2006,07-2006,08-2006,09-2006,10-2006,11-2006,12-2006,01-2007,02-2007,03,2007,04-2007,05-2006,06-2007,08-2007,09-2007,10-2007,11-2007,12-2007,01-2008,02-2008,03-2008,04-2008,05-2008,06-2008,07-2008,08-2008,09-2008,10-2008,11-2008,12-2008,01-2009,02-2009,03-2009,04-2009,05-2009,06-2009,07-2009,08-2009,09-2009,10-2009,11-2009,12-2009,01-2010,02-2010,03-2010,04-2010,05-2010,06-2010,07-2010,08-2010,09-2010,10-2010,11-2010,12-2010), "%mm-%YYYY")
 
 #read in tree cover data
 coverstats<-read.csv('coverstats.csv')
@@ -41,8 +34,6 @@ precip<-nc_open("congoprecip.nc")
   sink()
 }
 congoprecip<-ncvar_get(precip, precip$var$precip)
-View(congoprecip)
-dim(congoprecip)
 
 #read in precip from World Clim
 library(raster)
@@ -53,19 +44,19 @@ library(plyr)
 library(tiff)
 install.packages("sf")
 library(sf)
-#read in cropping shapefile
-congo_polyline<-readOGR("congo_basin_polyline/congo_basin_polyline.shp")
-#convert line to polygon
-congo_polyline_sf<-st_as_sf(congo_polyline)
-congo_line_poly<-st_polygonize(congo_polyline_sf)
-congoshed<-as(congo_line_poly, "Spatial")
 
-congo_polygon<-readOGR("congoshape/congoshape.shp")
+#set up months to read in
+precmonth <- c("2000-01","2000-02","2000-03","2000-04","2000-05","2000-06","2000-07","2000-08","2000-09","2000-10","2000-11","2000-12","2001-01","2001-02","2001-03","2001-04","2001-05","2001-06","2001-07","2001-08","2001-09","2001-10","2001-11","2001-12","2002-01","2002-02","2002-03","2002-04","2002-05","2002-06","2002-07","2002-08","2002-09","2002-10","2002-11","2002-12","2003-01","2003-02","2003-03","2003-04","2003-05","2003-06","2003-07","2003-08","2003-09","2003-10","2003-11","2003-12","2004-01","2004-02","2004-03","2004-04","2004-05","2004-06","2004-07","2004-08","2004-09","2004-10","2004-11","2004-12","2005-01","2005-02","2005-03","2005-04","2005-05","2005-06","2005-07","2005-08","2005-09","2005-10","2005-11","2005-12","2006-01","2006-02","2006-03","2006-04","2006-05","2006-06","2006-07","2006-08","2006-09","2006-10","2006-11","2006-12","2007-01","2007-02","2007-03","2007-04","2007-05","2007-06","2007-07","2007-08","2007-09","2007-10","2007-11","2007-12","2008-01","2008-02","2008-03","2008-04","2008-05","2008-06","2008-07","2008-08","2008-09","2008-10","2008-11","2008-12","2009-01","2009-02","2009-03","2009-04","2009-05","2009-06","2009-07","2009-08","2009-09","2009-10","2009-11","2009-12","2010-01","2010-02","2010-03","2010-04","2010-05","2010-06","2010-07","2010-08","2010-09","2010-10","2010-11","2010-12")
+
+#read all files into a list
+precraster <- list() 
+for(i in 1:length(precmonth)){
+  precraster[[i]] <- raster(paste0("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_",precmonth[i],".tif"))
+  
+}
+
 #read in the tif images and crop to shapefile
-prec01.2000<-mask(raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2000-01.tif"), congo_polygon)
-plot(prec01.2000.congo)
-plot(congo_polyline)
-
+prec01.2000<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2000-01.tif")
 prec02.2000<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2000-02.tif")
 prec03.2000<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2000-03.tif")
 prec04.2000<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2000-04.tif")
@@ -197,3 +188,23 @@ prec09.2010<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2010-09.tif")
 prec10.2010<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2010-10.tif")
 prec11.2010<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2010-11.tif")
 prec12.2010<-raster("wc2.1_2.5m_prec_2000-2009 (1)/wc2.1_2.5m_prec_2010-12.tif")
+
+#read in boundary shapefile
+congo_polygon<-readOGR("congoshape/congoshape.shp")
+#rasterize
+congoraster<-rasterize(congo_polygon,prec01.2000)
+plot(congoraster)
+
+prec<-stack(prec01.2000, prec02.2000, prec03.2000, prec04.2000, prec05.2000, prec06.2000, prec07.2000, prec08.2000, prec09.2000,prec10.2000,prec11.2000,prec12.2000,prec01.2001,prec02.2001,prec03.2001,prec04.2001,prec05.2001,prec06.2001,prec07.2001,prec08.2001,prec09.2001,prec10.2001,prec11.2001,prec12.2001,prec01.2002,prec02.2002,prec03.2002,prec04.2002,prec05.2002,prec06.2002,prec07.2002,prec08.2002,prec09.2002,prec10.2002,prec11.2002,prec12.2002,prec01.2003,prec02.2003,prec03.2003,prec04.2003,prec05.2003,prec06.2003,prec07.2003,prec08.2003,prec09.2003,prec10.2003,prec11.2003,prec12.2003,prec01.2004,prec02.2004,prec03.2004,prec04.2004,prec05.2004,prec06.2004,prec07.2004, prec08.2004,prec09.2004,prec10.2004,prec11.2004,prec12.2004,prec01.2005,prec02.2005,prec03.2005,prec04.2005,prec05.2005,prec06.2005,prec07.2005,prec08.2005,prec09.2005,prec10.2005,prec11.2005,prec12.2005,prec01.2006,prec02.2006,prec03.2006,prec04.2006,prec05.2006,prec06.2006,prec07.2006,prec08.2006,prec09.2006,prec10.2006,prec11.2006,prec12.2006,prec01.2007,prec02.2007,prec03.2007,prec04.2007,prec05.2007,prec06.2007,prec07.2007,prec08.2007,prec09.2007,prec10.2007,prec11.2007,prec12.2007,prec01.2008,prec02.2008,prec03.2008,prec04.2008,prec05.2008,prec06.2008,prec07.2008,prec08.2008,prec09.2008,prec10.2008,prec11.2008,prec12.2008,prec01.2009,prec03.2009,prec04.2009,prec05.2009,prec06.2009,prec07.2009,prec08.2009,prec09.2009,prec10.2009,prec11.2009,prec12.2009,prec01.2010,prec02.2010,prec03.2010,prec04.2010,prec05.2010,prec06.2010,prec07.2010,prec08.2010,prec09.2010,prec10.2010,prec11.2010,prec12.2010)
+zonal(prec@layers[[1]],congoraster, "sum")
+
+precmonth<-sequence(1:131)
+precextract <- list()
+sumprec <- numeric(0)
+#loop through all NDVI years
+for(i in 1:length(precmonth)){
+  #get raster values in the difference polygon
+  precextract[[i]] <- extract(prec@layers[[i]],congo_polygon)[[1]]
+  #calculate the mean of the NDVI values
+  sumprec[i] <- sum(precextract[[i]], na.rm=TRUE)
+}
